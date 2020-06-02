@@ -1,6 +1,7 @@
 package com.OAT.Routing.DataAccess;
 
 import com.OAT.Routing.DataEntity.*;
+import com.OAT.Routing.DataEntity.Attribute.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,6 +22,13 @@ public class DataContainer {
     private List<OSource> sources = new ArrayList<OSource>();
     private List<OTrailer> trailers = new ArrayList<OTrailer>();
 
+    
+    private OAttribueTypes trailerAttributeType =  new OAttribueTypes();
+    private OAttribueTypes sourceAttributeType =  new OAttribueTypes();
+    private OAttribueTypes customerAttributeType =  new OAttribueTypes();
+    
+    
+    
     private Date startDay;
     private Date endDay;
 
@@ -79,7 +87,7 @@ public class DataContainer {
     }
     
     //OLocation
-    //保留
+    //ä¿�ç•™
     
     //OCustomer
     public OCustomer getCustomer(String customerID){

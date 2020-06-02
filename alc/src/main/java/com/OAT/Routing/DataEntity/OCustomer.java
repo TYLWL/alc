@@ -5,7 +5,7 @@ import java.util.Hashtable;
 
 public class OCustomer extends OLocation {
     private String CustomerID;
-    private HashSet<String> customerAttrIDs;
+   // private HashSet<String> customerAttrIDs;
     private Hashtable<String,String> customerAttrValue;
     private String Description;
 
