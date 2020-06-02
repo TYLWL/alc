@@ -1,9 +1,17 @@
 package com.OAT.Routing.DataEntity;
+import java.util.*;
 
-public class OTrailer extends ODepot {
+public class OTrailer  {
     private String TrailerID;
     private String ProductID;
     private String Description;
+    
+    private ODepot _homeDepot;
+    
+    private HashMap<Date, Boolean> _isTrailerAvailOnDay = new HashMap();
+    private HashMap<String, String> _attribute = new HashMap();
+    private HashMap<Date,HashMap<String, String>> _dailyAttribute = new HashMap();
+    
 
     public OTrailer(String regionID, double latitude, double longitude, String depotID, String trailerID) {
         super(regionID, latitude, longitude, depotID);
@@ -15,6 +23,11 @@ public class OTrailer extends ODepot {
         TrailerID = trailerID;
         ProductID = productID;
         Description = description;
+    }
+    
+    public void setTailerAvailability(Date day, Boolean isAvail)
+    {
+    	_isTrailerAvailOnDay.put(day, isAvail);
     }
 
     public String getTrailerID() {

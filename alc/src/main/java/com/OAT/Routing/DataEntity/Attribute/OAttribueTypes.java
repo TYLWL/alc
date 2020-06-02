@@ -21,5 +21,16 @@ public class OAttribueTypes
 	{
 		_attribueTypes.put(attrId, type);
 	}
+	
+	public String getType(String attrId, String productId)
+	{
+		return _attribueTypes.get(attrId+"/"+productId);
+		
+	}
+	public void addType(String attrId, String productId, String type)
+	{
+		_attribueTypes.put(attrId+"/"+productId, type);
+	}
+
 
 }
