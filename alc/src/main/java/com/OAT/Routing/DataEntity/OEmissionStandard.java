@@ -10,6 +10,7 @@ public class OEmissionStandard {
     public OEmissionStandard(String emissionStandardID,  String description) {
         EmissionStandardID = emissionStandardID;
         Description = description;
+        emissionStandard = new HashSet<>();
     }
 
     public void setEmissionStandard(OEmissionStandard e) {

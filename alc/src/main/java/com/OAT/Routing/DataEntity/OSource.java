@@ -1,14 +1,13 @@
 package com.OAT.Routing.DataEntity;
 
-import java.util.HashSet;
 import java.util.Hashtable;
 
 public class OSource extends OLocation {
     private String SourceID;
     private String Description;
 
-    private HashSet<String> sourceAttrIDs;
-    private Hashtable<String,String> sourceAttrValue;
+    private Hashtable<String,String> sourceAttrData;
+
     public OSource(String regionID, double latitude, double longitude, String sourceID) {
         super(regionID, latitude, longitude);
         SourceID = sourceID;
@@ -18,10 +17,7 @@ public class OSource extends OLocation {
         super(regionID, latitude, longitude);
         SourceID = sourceID;
         Description = description;
-    }
-
-    public void addSourceAttribute(String attribute){
-        sourceAttrIDs.add(attribute);
+        sourceAttrData = new Hashtable<String,String>();
     }
 
 
@@ -30,9 +26,16 @@ public class OSource extends OLocation {
         return "OSource{" +
                 "SourceID='" + SourceID + '\'' +
                 ", Description='" + Description + '\'' +
-                ", sourceAttrIDs=" + sourceAttrIDs +
-                ", sourceAttrValue=" + sourceAttrValue +
+                ", sourceAttrData=" + sourceAttrData +
                 '}';
+    }
+
+    public void addSourceAttrData(String productId,String attributeId, String data){
+        this.sourceAttrData.put(productId+"/"+attributeId, data);
+    }
+
+    public String getSourceAttrData(String productId,String attributeId) {
+        return sourceAttrData.get(productId+"/"+attributeId);
     }
 
     public String getSourceID() {

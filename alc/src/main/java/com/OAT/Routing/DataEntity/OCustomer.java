@@ -1,12 +1,10 @@
 package com.OAT.Routing.DataEntity;
 
-import java.util.HashSet;
 import java.util.Hashtable;
 
 public class OCustomer extends OLocation {
     private String CustomerID;
- //   private HashSet<String> customerAttrIDs;
-    private Hashtable<String,String> customerAttrValue;
+    private Hashtable<String,String> customerAttrData;
     private String Description;
 
     public OCustomer(String regionID, double latitude, double longitude, String customerID) {
@@ -18,6 +16,25 @@ public class OCustomer extends OLocation {
         super(regionID, latitude, longitude);
         CustomerID = customerID;
         Description = description;
+        customerAttrData = new Hashtable<>();
+    }
+
+
+    public String getCustomerAttrData(String attribute) {
+        return customerAttrData.get(attribute);
+    }
+
+    public void addCustomerAttrData(String attribute, String data) {
+        this.customerAttrData.put(attribute, data);
+    }
+
+    @Override
+    public String toString() {
+        return "OCustomer{" +
+                "CustomerID='" + CustomerID + '\'' +
+                ", customerAttrValue=" + customerAttrData +
+                ", Description='" + Description + '\'' +
+                '}';
     }
 
     public String getCustomerID() {

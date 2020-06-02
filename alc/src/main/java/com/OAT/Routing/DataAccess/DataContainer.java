@@ -1,43 +1,31 @@
 package com.OAT.Routing.DataAccess;
 
 import com.OAT.Routing.DataEntity.*;
-import com.OAT.Routing.DataEntity.Attribute.*;
+import com.OAT.Routing.DataEntity.OAttributeTypes;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class DataContainer {
-    private List<DailyOrder> dailyOrders = new ArrayList<DailyOrder>();
-    private List<DailySource> dailySources = new ArrayList<DailySource>();
-    private List<OCustomer> customers = new ArrayList<OCustomer>();
-    private List<ODepot> depots = new ArrayList<ODepot>();
-    private List<ODistrict> districts = new ArrayList<ODistrict>();
-    private List<ODriver> drivers = new ArrayList<ODriver>();
-    private List<OEmissionStandard> emissionStandards = new ArrayList<OEmissionStandard>();
-    private List<OProduct> products = new ArrayList<OProduct>();
-    private List<OProductGrade> productGrades = new ArrayList<OProductGrade>();
-    private List<OProductSpec> productSpecs = new ArrayList<OProductSpec>();
-    private List<ORegion> regions = new ArrayList<ORegion>();
-    private List<OSource> sources = new ArrayList<OSource>();
-    private List<OTrailer> trailers = new ArrayList<OTrailer>();
+    private List<DailyOrder> dailyOrders = new ArrayList<>();
+    private List<OCustomer> customers = new ArrayList<>();
+    private List<ODepot> depots = new ArrayList<>();
+    private List<ODistrict> districts = new ArrayList<>();
+    private List<ODriver> drivers = new ArrayList<>();
+    private List<OEmissionStandard> emissionStandards = new ArrayList<>();
+    private List<OProduct> products = new ArrayList<>();
+    private List<OProductGrade> productGrades = new ArrayList<>();
+    private List<OProductSpec> productSpecs = new ArrayList<>();
+    private List<ORegion> regions = new ArrayList<>();
+    private List<OSource> sources = new ArrayList<>();
+    private List<OTrailer> trailers = new ArrayList<>();
 
-    
-    private OAttribueTypes trailerAttributeType =  new OAttribueTypes();
-    private OAttribueTypes sourceAttributeType =  new OAttribueTypes();
-    private OAttribueTypes customerAttributeType =  new OAttribueTypes();
-    
-    
-    
-    private Date startDay;
-    private Date endDay;
+    private OAttributeTypes trailerAttributeType =  new OAttributeTypes();
+    private OAttributeTypes sourceAttributeType =  new OAttributeTypes();
+    private OAttributeTypes customerAttributeType =  new OAttributeTypes();
+
 
     public DataContainer(){
-    }
-
-    public void setDate(Date startDay,Date endDay){
-        this.startDay = startDay;
-        this.endDay = endDay;
     }
 
     //OProduct
@@ -50,7 +38,7 @@ public class DataContainer {
         return null;
     }
     public void addProduct(OProduct product){
-        if(getProduct(product.getProductID()) !=null){
+        if(getProduct(product.getProductID()) ==null){
             products.add(product);
         }
     }
@@ -65,31 +53,18 @@ public class DataContainer {
         return null;
     }
     public void addDailyOrder(DailyOrder dailyOrder) {
-        if(getDailyOrder(dailyOrder.getOrderID()) !=null){
+        if(getDailyOrder(dailyOrder.getOrderID()) ==null){
             dailyOrders.add(dailyOrder);
         }
     }
 
-    //DailySource
-    public DailySource getDailySource(String dailySourceID) {
-        for (DailySource o: dailySources){
-            if(o.getSourceID().equals(dailySourceID)){
-                return o;
-            }
-        }
-        return null;
-    }
-    
-    public void addDailySource(DailySource dailySource) {
-        if(getDailySource(dailySource.getSourceID()) != null){
-            dailySources.add(dailySource);
-        }
-    }
-    
     //OLocation
-    //ä¿�ç•™
-    
+    //保留
+
     //OCustomer
+    public List<OCustomer> getCustomerList(){
+        return customers;
+    }
     public OCustomer getCustomer(String customerID){
         for(OCustomer o:customers){
             if(o.getCustomerID().equals(customerID)){
@@ -99,11 +74,15 @@ public class DataContainer {
         return null;
     }
     public void addCustomer(OCustomer customer){
-        if(getCustomer(customer.getCustomerID()) != null){
+        if(getCustomer(customer.getCustomerID()) == null){
             customers.add(customer);
         }
     }
-    
+
+    public void addCustomerAttributeType(String attribute,String type) {
+        this.customerAttributeType.addType(attribute,type);
+    }
+
     //depot
     public ODepot getDepot(String depotID){
         for(ODepot o:depots){
@@ -114,7 +93,7 @@ public class DataContainer {
         return null;
     }
     public void addDepot(ODepot depot){
-        if(getDepot(depot.getDepotID())  != null){
+        if(getDepot(depot.getDepotID())  == null){
             depots.add(depot);
         }
     }
@@ -128,7 +107,7 @@ public class DataContainer {
         return null;
     }
     public void addDistrict(ODistrict district){
-        if(getDistrict(district.getDistrictID()) !=null){
+        if(getDistrict(district.getDistrictID()) ==null){
             districts.add(district);
         }
     }
@@ -143,12 +122,17 @@ public class DataContainer {
         return null;
     }
     public void addDriver(ODriver driver){
-        if(getDricer(driver.getPersonnelID()) !=null ){
+        if(getDricer(driver.getPersonnelID()) ==null ){
             drivers.add(driver);
         }
     }
 
     //OEmissionStandard
+
+    public List<OEmissionStandard> getEmissionStandards() {
+        return emissionStandards;
+    }
+
     public OEmissionStandard getEmissionStandard(String emissionStandardID){
         for (OEmissionStandard o:emissionStandards){
             if(emissionStandardID.equals(o.getEmissionStandardID())){
@@ -158,7 +142,7 @@ public class DataContainer {
         return null;
     }
     public void addEmissionStandard(OEmissionStandard emissionStandard){
-        if(getEmissionStandard(emissionStandard.getEmissionStandardID()) !=null){
+        if(getEmissionStandard(emissionStandard.getEmissionStandardID()) ==null){
             emissionStandards.add(emissionStandard);
         }
     }
@@ -173,7 +157,7 @@ public class DataContainer {
         return null;
     }
     public void addProductGrade(OProductGrade productGrade){
-        if(getProductGrade(productGrade.getProductGradeID() )!= null){
+        if(getProductGrade(productGrade.getProductGradeID() )== null){
             productGrades.add(productGrade);
         }
     }
@@ -188,7 +172,7 @@ public class DataContainer {
         return null;
     }
     public void addProductSpec(OProductSpec productSpec){
-        if(getProductSpec(productSpec.getProductSpecID()) != null){
+        if(getProductSpec(productSpec.getProductSpecID()) == null){
             productSpecs.add(productSpec);
         }
     }
@@ -203,14 +187,17 @@ public class DataContainer {
         return null;
     }
     public void addRegion(ORegion region){
-        if(getRegion(region.getRegionID()) != null){
+        if(getRegion(region.getRegionID()) == null){
             regions.add(region);
         }
     }
 
     //OSource
+    public List<OSource> getSourceList(){
+        return sources;
+    }
     public OSource getSource(String sourceID) {
-        for(OSource o:sources){
+        for (OSource o:sources){
             if(o.getSourceID().equals(sourceID)){
                 return o;
             }
@@ -219,12 +206,20 @@ public class DataContainer {
     }
 
     public void addSource(OSource source) {
-        if(getSource(source.getSourceID()) != null){
+        if(getSource(source.getSourceID()) == null){
             sources.add(source);
         }
     }
+    public void addSourceAttributeType(String attributeId, String type){
+        sourceAttributeType.addType(attributeId,  type);
+    }
 
     //OTrailer
+
+    public List<OTrailer> getTrailerList() {
+        return trailers;
+    }
+
     public OTrailer getTrailer(String trailerID) {
         for(OTrailer o:trailers){
             if(o.getTrailerID() != null){
@@ -234,8 +229,11 @@ public class DataContainer {
         return null;
     }
     public void addTrailer(OTrailer trailer){
-        if(getTrailer(trailer.getTrailerID()) != null){
+        if(getTrailer(trailer.getTrailerID()) == null){
             trailers.add(trailer);
         }
+    }
+    public void addTrailerAttributeType(String attributeId,String type){
+        trailerAttributeType.addType(attributeId, type);
     }
 }

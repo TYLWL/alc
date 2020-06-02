@@ -1,33 +1,54 @@
 package com.OAT.Routing.DataEntity;
-import java.util.*;
 
-public class OTrailer  {
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Hashtable;
+
+public class OTrailer {
     private String TrailerID;
     private String ProductID;
-    private String Description;
-    
-    private ODepot _homeDepot;
-    
-    private HashMap<Date, Boolean> _isTrailerAvailOnDay = new HashMap();
-    private HashMap<String, String> _attribute = new HashMap();
-    private HashMap<Date,HashMap<String, String>> _dailyAttribute = new HashMap();
-    
+    private Hashtable<String,String> trailerAttrData;
+    private ODepot homeDepot;
 
-    public OTrailer(String regionID, double latitude, double longitude, String depotID, String trailerID) {
-        super(regionID, latitude, longitude, depotID);
+    private Hashtable<Date, Boolean> isTrailerAvailOnDay = new Hashtable<>();
+    private Hashtable<Date,HashMap<String, String>> dailyAttribute = new Hashtable<>();
+    private String Description;
+
+    public OTrailer(String trailerID) {
         TrailerID = trailerID;
     }
 
-    public OTrailer(String regionID, double latitude, double longitude, String depotID, String trailerID, String productID, String description) {
-        super(regionID, latitude, longitude, depotID);
+    public OTrailer(String trailerID, String productID, String description) {
         TrailerID = trailerID;
         ProductID = productID;
         Description = description;
+        trailerAttrData = new Hashtable<>();
     }
-    
-    public void setTailerAvailability(Date day, Boolean isAvail)
-    {
-    	_isTrailerAvailOnDay.put(day, isAvail);
+
+    @Override
+    public String toString() {
+        return "OTrailer{" +
+                "TrailerID='" + TrailerID + '\'' +
+                ", ProductID='" + ProductID + '\'' +
+                ", trailerAttrData=" + trailerAttrData +
+                ", Description='" + Description + '\'' +
+                '}';
+    }
+
+    public void addTrailerAttrData(String attribute, String data){
+        trailerAttrData.put(attribute, data);
+    }
+
+    public ODepot getHomeDepot() {
+        return homeDepot;
+    }
+
+    public void setHomeDepot(ODepot homeDepot) {
+        this.homeDepot = homeDepot;
+    }
+
+    public String getTrailerAttrData(String attribute) {
+        return trailerAttrData.get(attribute);
     }
 
     public String getTrailerID() {
@@ -46,12 +67,10 @@ public class OTrailer  {
         ProductID = productID;
     }
 
-    @Override
     public String getDescription() {
         return Description;
     }
 
-    @Override
     public void setDescription(String description) {
         Description = description;
     }

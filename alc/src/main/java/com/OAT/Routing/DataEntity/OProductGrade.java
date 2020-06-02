@@ -24,6 +24,7 @@ public class OProductGrade extends OProduct {
         super(productID);
         ProductGradeID = productGradeID;
         Description = description;
+        productGradeCompatibilities = new HashSet<OProductGrade>();
     }
 
     public String getProductGradeID() {

@@ -24,6 +24,7 @@ public class OProductSpec extends OProduct {
         ProductSpecID = productSpecID;
         ProductSpecType = productSpecType;
         Description = description;
+        productSpecCompatibilities = new HashSet<>();
     }
 
     public String getProductSpecID() {
