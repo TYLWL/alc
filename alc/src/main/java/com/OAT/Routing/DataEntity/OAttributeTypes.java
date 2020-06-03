@@ -12,7 +12,7 @@ public class OAttributeTypes
 	/*
 	 * this class stores the type of data for each attribute
 	 */
-	private Hashtable<String,String> _attributeTypes = new Hashtable<String,String>();
+	private Hashtable<String,String> _attributeTypes = new Hashtable<>();
 		
 	public String getType(String attrId)
 	{

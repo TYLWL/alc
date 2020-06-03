@@ -3,6 +3,9 @@ package com.OAT.Routing.DataAccess;
 import com.OAT.Routing.DataEntity.*;
 
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 
 public class DBReader {
@@ -36,6 +39,7 @@ public class DBReader {
         setTrailers();
         setTrailerAttributeType();
         setTrailerAttrData();
+        setDailyTrailer();
         setDailyOrders();
     }
     //product
@@ -47,17 +51,13 @@ public class DBReader {
         }
     }
 
-    //dailySource
-    public void setDailySource()throws Exception{
-        ResultSet dailySources = _dataContext.getSqlConnection().getObject("select * from daily_sourceattrdata");
-        dailySources.close();
-    }
 
     //dailyOrder
     public void setDailyOrders()throws Exception{
         ResultSet orders = _dataContext.getSqlConnection().getObject("select * from daily_order where Date <= '" +_dataContext.getEndDay() + "' and Date >= '" +_dataContext.getStartDay() +"'");
         while (orders.next()){
-           DailyOrder order = new DailyOrder(orders.getString("RegionID"),orders.getDouble("Latitude "),orders.getDouble("Longitude"),orders.getString("CustomerID"),orders.getString("OrderID"),orders.getString("ProductID"),orders.getDate("Date"),orders.getDouble("EstimatedDropSize"),orders.getString("DeliveryType"),orders.getBoolean("IsFirstDevilery"),orders.getString("SpecialTimeStart"),orders.getString("SpecialTimeEnd"),orders.getBoolean("IsSoftTime"),orders.getBoolean("IsFTFD"),orders.getBoolean("IsSoftFTFD"),orders.getString("Description"));
+            OCustomer customer = _dataContext.getDataContainer().getCustomer(orders.getString("CustomerID"));
+            DailyOrder order = new DailyOrder(orders.getString("OrderID"),orders.getString("ProductID"),orders.getDate("Date"),orders.getDouble("EstimatedDropSize"),orders.getString("DeliveryType"),orders.getBoolean("IsFirstDelivery"),orders.getString("SpecialTimeStart"),orders.getString("SpecialTimeEnd"),orders.getBoolean("IsSoftTime"),orders.getBoolean("IsFTFD"),orders.getBoolean("IsSoftFTFD"),orders.getString("Description"),customer);
             _dataContext.getDataContainer().addDailyOrder(order);
         }
         orders.close();
@@ -205,6 +205,19 @@ public class DBReader {
         }
     }
 
+    //dailySource
+    public void setDailySource()throws Exception{
+        ResultSet dailySources = _dataContext.getSqlConnection().getObject("select * from daily_source where Date <= '" + _dataContext.getEndDay() + "' and Date >= '" + _dataContext.getStartDay() +"'");
+        while (dailySources.next()){
+            Date date = dailySources.getDate("Date");
+            Hashtable<Date,String> data = new Hashtable<>();
+            data.put(dailySources.getDate("Date"),dailySources.getString("ProductID"));
+            _dataContext.getDataContainer().getSource(dailySources.getString("SourceID")).setSourceAvailableQuantity(data,dailySources.getInt("AvailableQuantity"));
+
+        }
+        dailySources.close();
+    }
+
     //OTrailer
     public void setTrailers()throws Exception{
         ResultSet trailers = _dataContext.getSqlConnection().getObject("select * from master_trailer");
@@ -233,4 +246,25 @@ public class DBReader {
     }
 
     //dailyTrailer
+    public void setDailyTrailer()throws Exception{
+        ResultSet dailyTrailers = _dataContext.getSqlConnection().getObject("select * from daily_trailer where Date <= '" + _dataContext.getEndDay() + "' and Date >= '" + _dataContext.getStartDay() +"'");
+        while (dailyTrailers.next()){
+            Date date = dailyTrailers.getDate("Date");
+            _dataContext.getDataContainer().getTrailer(dailyTrailers.getString("TrailerID")).setTrailerAvailOnDay(date,dailyTrailers.getBoolean("IsAvailable"));
+
+            Hashtable<String,String> data = new Hashtable<>();
+            data.put("OvernightProductASU",dailyTrailers.getString("OvernightProductASU"));
+
+            if(dailyTrailers.getString("SpecialStartTime") == null){
+                data.put("SpecialStartTime","");
+            }else {
+                data.put("SpecialStartTime",dailyTrailers.getString("SpecialStartTime"));
+            }
+
+            _dataContext.getDataContainer().getTrailer(dailyTrailers.getString("TrailerID")).setDailyAttributeData(date,data);
+
+
+        }
+        dailyTrailers.close();
+    }
 }

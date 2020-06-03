@@ -7,11 +7,11 @@ import java.util.Hashtable;
 public class OTrailer {
     private String TrailerID;
     private String ProductID;
-    private Hashtable<String,String> trailerAttrData;
+    private Hashtable<String,String> trailerAttrData = new Hashtable<>();
     private ODepot homeDepot;
 
-    private Hashtable<Date, Boolean> isTrailerAvailOnDay = new Hashtable<>();
-    private Hashtable<Date,HashMap<String, String>> dailyAttribute = new Hashtable<>();
+    private HashMap<Date, Boolean> isTrailerAvailOnDay = new HashMap<>();
+    private HashMap<Date,Hashtable<String, String>> dailyAttributeData = new HashMap<>();
     private String Description;
 
     public OTrailer(String trailerID) {
@@ -22,8 +22,9 @@ public class OTrailer {
         TrailerID = trailerID;
         ProductID = productID;
         Description = description;
-        trailerAttrData = new Hashtable<>();
+
     }
+
 
     @Override
     public String toString() {
@@ -31,8 +32,27 @@ public class OTrailer {
                 "TrailerID='" + TrailerID + '\'' +
                 ", ProductID='" + ProductID + '\'' +
                 ", trailerAttrData=" + trailerAttrData +
+                ", homeDepot=" + homeDepot +
+                ", isTrailerAvailOnDay=" + isTrailerAvailOnDay +
+                ", dailyAttributeData=" + dailyAttributeData +
                 ", Description='" + Description + '\'' +
                 '}';
+    }
+
+    public void setTrailerAvailOnDay(Date date, Boolean isAvail) {
+        this.isTrailerAvailOnDay.put(date,isAvail);
+    }
+
+    public HashMap<Date, Boolean> getIsTrailerAvailOnDay() {
+        return isTrailerAvailOnDay;
+    }
+
+    public HashMap<Date, Hashtable<String, String>> getDailyAttributeData() {
+        return dailyAttributeData;
+    }
+
+    public void setDailyAttributeData(Date date, Hashtable<String, String> dailyData) {
+        this.dailyAttributeData.put(date, dailyData);
     }
 
     public void addTrailerAttrData(String attribute, String data){

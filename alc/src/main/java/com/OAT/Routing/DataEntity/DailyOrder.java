@@ -2,7 +2,7 @@ package com.OAT.Routing.DataEntity;
 
 import java.sql.Date;
 
-public class DailyOrder extends OCustomer {
+public class DailyOrder{
     private String OrderID;
     private String ProductID;
     private Date Date;
@@ -15,9 +15,9 @@ public class DailyOrder extends OCustomer {
     private Boolean IsFTFD;
     private Boolean IsSoftFTFD;
     private String Description;
+    private OCustomer customer;
 
-    public DailyOrder(String regionID, double latitude, double longitude, String customerID, String orderID, String productID, java.sql.Date date, double estimatedDropSize, String deliveryType, boolean isFirstDelivery, String specialTimeStart, String specialTimeEnd, Boolean isSoftTime, Boolean isFTFD, Boolean isSoftFTFD, String description) {
-        super(regionID, latitude, longitude, customerID);
+    public DailyOrder(String orderID, String productID, java.sql.Date date, double estimatedDropSize, String deliveryType, boolean isFirstDelivery, String specialTimeStart, String specialTimeEnd, Boolean isSoftTime, Boolean isFTFD, Boolean isSoftFTFD, String description, OCustomer customer) {
         OrderID = orderID;
         ProductID = productID;
         Date = date;
@@ -30,6 +30,7 @@ public class DailyOrder extends OCustomer {
         IsFTFD = isFTFD;
         IsSoftFTFD = isSoftFTFD;
         Description = description;
+        this.customer = customer;
     }
 
     @Override
@@ -47,7 +48,16 @@ public class DailyOrder extends OCustomer {
                 ", IsFTFD=" + IsFTFD +
                 ", IsSoftFTFD=" + IsSoftFTFD +
                 ", Description='" + Description + '\'' +
+                ", customer=" + customer +
                 '}';
+    }
+
+    public OCustomer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(OCustomer customer) {
+        this.customer = customer;
     }
 
     public String getOrderID() {
@@ -138,12 +148,12 @@ public class DailyOrder extends OCustomer {
         IsSoftFTFD = softFTFD;
     }
 
-    @Override
+
     public String getDescription() {
         return Description;
     }
 
-    @Override
+
     public void setDescription(String description) {
         Description = description;
     }

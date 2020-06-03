@@ -4,7 +4,7 @@ import java.util.Hashtable;
 
 public class OCustomer extends OLocation {
     private String CustomerID;
-    private Hashtable<String,String> customerAttrData;
+    private Hashtable<String,String> customerAttrData = new Hashtable<>();
     private String Description;
 
     public OCustomer(String regionID, double latitude, double longitude, String customerID) {
@@ -16,7 +16,7 @@ public class OCustomer extends OLocation {
         super(regionID, latitude, longitude);
         CustomerID = customerID;
         Description = description;
-        customerAttrData = new Hashtable<>();
+
     }
 
 

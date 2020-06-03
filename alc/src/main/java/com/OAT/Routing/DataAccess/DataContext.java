@@ -6,11 +6,11 @@ public class DataContext {
 
     private static DataContainer dataContainer;
     private static SqlConnection sqlConnection;
-    private Date _startDay;
-    private Date _endDay;
+    private String _startDay;
+    private String _endDay;
 
 
-    public DataContext(Date start, Date end){
+    public DataContext(String start, String end){
 
         try
         {
@@ -27,12 +27,12 @@ public class DataContext {
 
     }
 
-    public Date getStartDay()
+    public String getStartDay()
     {
         return _startDay;
     }
 
-    public Date getEndDay()
+    public String getEndDay()
     {
         return _endDay;
     }
