@@ -2,17 +2,27 @@ package com.OAT.Routing.test;
 
 
 import com.OAT.Routing.DataAccess.*;
+import com.OAT.Routing.DataEntity.ORoute;
+import com.OAT.Routing.DataEntity.User;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.regex.Pattern;
+
 
 public class Test {
-    public static void main(String[] args) throws Exception{
-        DataContext  context = new DataContext("2020-04-01","2020-04-30");
-        System.out.println("main:"+context.getDataContainer().getTrailer("C76217").toString());
-        System.out.println(context.getDataContainer().getSource("ASU_BH").toString());
 
+
+
+    public static void main(String[] args) throws Exception{
+        ArrayList a = new ArrayList();
+        Hashtable b = new Hashtable();
+        b.put("hello",45);
+        b.put("hellll",55);
+        a.add(b);
+        a.add("hello");
+        a.add("kkkkk");
+        System.out.println(a);
     }
 }

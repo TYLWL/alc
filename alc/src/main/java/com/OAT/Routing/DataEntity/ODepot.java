@@ -1,5 +1,7 @@
 package com.OAT.Routing.DataEntity;
 
+import java.util.Hashtable;
+
 public class ODepot extends OLocation {
     private String DepotID;
     private int MaxTrailers;
@@ -15,6 +17,28 @@ public class ODepot extends OLocation {
         DepotID = depotID;
         MaxTrailers = maxTrailers;
         Description = description;
+    }
+
+    public Hashtable toMap() {
+        Hashtable h = new Hashtable();
+        h.put("DepotID",DepotID);
+        h.put("RegionID",super.getRegionID());
+        h.put("MaxTrailers",MaxTrailers);
+        h.put("Longitude",super.getLongitude());
+        h.put("Latitude",super.getLatitude());
+        if(this.Description != null) {
+            h.put("Description", Description);
+        }
+        return h;
+    }
+
+    @Override
+    public String toString() {
+        return "ODepot{" +
+                "DepotID='" + DepotID + '\'' +
+                ", MaxTrailers=" + MaxTrailers +
+                ", Description='" + Description + '\'' +
+                '}';
     }
 
     public String getDepotID() {

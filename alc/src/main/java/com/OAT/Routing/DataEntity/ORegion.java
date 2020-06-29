@@ -1,6 +1,8 @@
 package com.OAT.Routing.DataEntity;
 
-public abstract class ORegion {
+import java.util.Hashtable;
+
+public class ORegion {
     private String RegionID;
     private String Description;
     public ORegion(){
@@ -13,7 +15,14 @@ public abstract class ORegion {
         RegionID = regionID;
         Description = description;
     }
-
+    public Hashtable toMap(){
+        Hashtable h = new Hashtable();
+        h.put("RegionID",RegionID);
+        if(this.Description != null){
+            h.put("Description",Description);
+        }
+        return h;
+    }
     public String getRegionID() {
         return RegionID;
     }

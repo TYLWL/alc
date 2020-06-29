@@ -3,22 +3,26 @@ package com.OAT.Routing.DataAccess;
 import com.OAT.Routing.DataEntity.*;
 
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
 public class DBReader {
 
 	private static DataContext _dataContext;
-	
-	
+
+    public DBReader() {
+    }
+
     public DBReader(DataContext dataContext)
     {
     	_dataContext =dataContext;
     }
     public void readData()throws Exception{
+        //setUsers();
         setRegions();
+        setRoutes();
         setDepots();
         setDistricts();
         setProducts();
@@ -28,23 +32,31 @@ public class DBReader {
         setProductSpecCompatibility();
         setEmissionStandards();
         setEmissionCompatibility();
+        setDrivers();
+        setSources();
+
+        setTrailers();
+    }
+    public void readDailyData()throws Exception{
+
         setCustomers();
         setCustomerAttributeType();
         setCustomerAttrData();
-        setDrivers();
-        setSources();
         setDailySource();
         setSourceAttributeType();
         setSourceAttrData();
-        setTrailers();
         setTrailerAttributeType();
         setTrailerAttrData();
         setDailyTrailer();
         setDailyOrders();
     }
+
+    //简单示例
     //product
     public void setProducts()throws Exception{
+        //数据库查询，返回ResultSet结果
         ResultSet products = _dataContext.getSqlConnection().getObject("select * from product");
+        //开始遍历所有查询结果，创建响应实例，存入container中
         while (products.next()){
             OProduct product = new OProduct(products.getString("ProductID"),products.getString("Description"));
             _dataContext.getDataContainer().addProduct(product);
@@ -55,9 +67,10 @@ public class DBReader {
     //dailyOrder
     public void setDailyOrders()throws Exception{
         ResultSet orders = _dataContext.getSqlConnection().getObject("select * from daily_order where Date <= '" +_dataContext.getEndDay() + "' and Date >= '" +_dataContext.getStartDay() +"'");
+
         while (orders.next()){
             OCustomer customer = _dataContext.getDataContainer().getCustomer(orders.getString("CustomerID"));
-            DailyOrder order = new DailyOrder(orders.getString("OrderID"),orders.getString("ProductID"),orders.getDate("Date"),orders.getDouble("EstimatedDropSize"),orders.getString("DeliveryType"),orders.getBoolean("IsFirstDelivery"),orders.getString("SpecialTimeStart"),orders.getString("SpecialTimeEnd"),orders.getBoolean("IsSoftTime"),orders.getBoolean("IsFTFD"),orders.getBoolean("IsSoftFTFD"),orders.getString("Description"),customer);
+            DailyOrder order = new DailyOrder(orders.getString("OrderID"),orders.getString("ProductID"),orders.getString("Date"),orders.getDouble("EstimatedDropSize"),orders.getString("DeliveryType"),orders.getBoolean("IsFirstDelivery"),orders.getString("SpecialTimeStart"),orders.getString("SpecialTimeEnd"),orders.getBoolean("IsSoftTime"),orders.getBoolean("IsFTFD"),orders.getBoolean("IsSoftFTFD"),orders.getString("Description"),customer);
             _dataContext.getDataContainer().addDailyOrder(order);
         }
         orders.close();
@@ -70,6 +83,7 @@ public class DBReader {
             OCustomer customer = new OCustomer(customers.getString("RegionID"), customers.getDouble("Latitude"),customers.getDouble("Longitude"),customers.getString("CustomerID"),customers.getString("Description"));
             _dataContext.getDataContainer().addCustomer(customer);
         }
+        customers.close();
     }
 
     public void setCustomerAttributeType()throws Exception{
@@ -82,7 +96,7 @@ public class DBReader {
     public void setCustomerAttrData()throws Exception{
         List<OCustomer> customerList = _dataContext.getDataContainer().getCustomerList();
         for(OCustomer customer:customerList){
-            ResultSet customerAttrData = _dataContext.getSqlConnection().getObject("select * from master_customerattrdata where CustomerID = '"+ customer.getCustomerID() +"'");
+            ResultSet customerAttrData = _dataContext.getSqlConnection().getObject("select * from customerattrdata where CustomerID = '"+ customer.getCustomerID() +"'");
             while (customerAttrData.next()){
                 customer.addCustomerAttrData(customerAttrData.getString("CustomerAttrID"),customerAttrData.getString("data"));
             }
@@ -98,6 +112,7 @@ public class DBReader {
             ODepot depot = new ODepot(depots.getString("RegionID"), depots.getDouble("Latitude"),depots.getDouble("Longitude"),depots.getString("DepotID"),depots.getInt("MaxTrailers"),depots.getString("Description"));
             _dataContext.getDataContainer().addDepot(depot);
         }
+        depots.close();
     }
 
 
@@ -108,6 +123,7 @@ public class DBReader {
             ODistrict district = new ODistrict(districts.getString("RegionID"), districts.getString("DistrictID"),districts.getString("Prefecture"),districts.getString("County"),districts.getString("ERStart"),districts.getString("EREnd"),districts.getString("NMStart"),districts.getString("NMEnd"),districts.getBoolean("HasHolidayRestriction"),districts.getString("PermittedTrailersID").split(","),districts.getString("Description"));
             _dataContext.getDataContainer().addDistrict(district);
         }
+        districts.close();
     }
 
     //ODriver
@@ -156,11 +172,12 @@ public class DBReader {
     }
     //OProductSpec
     public void setProductSpecs()throws Exception {
-        ResultSet peoductSpecs = _dataContext.getSqlConnection().getObject("select * from productspec");
-        while (peoductSpecs.next()){
-            OProductSpec productSpec = new OProductSpec(peoductSpecs.getString("ProductID"), peoductSpecs.getString("ProductSpecID"),peoductSpecs.getString("ProductSpecType"),peoductSpecs.getString("Description"));
+        ResultSet productSpecs = _dataContext.getSqlConnection().getObject("select * from productspec");
+        while (productSpecs.next()){
+            OProductSpec productSpec = new OProductSpec(productSpecs.getString("ProductID"), productSpecs.getString("ProductSpecID"),productSpecs.getString("ProductSpecType"),productSpecs.getString("Description"));
             _dataContext.getDataContainer().addProductSpec(productSpec);
         }
+        productSpecs.close();
     }
     public void setProductSpecCompatibility()throws Exception{
         ResultSet specCompatible = _dataContext.getSqlConnection().getObject("select * from productspeccompatibility");
@@ -174,18 +191,33 @@ public class DBReader {
         ResultSet regions = _dataContext.getSqlConnection().getObject("select * from region");
         while (regions.next()){
             ORegion region = new ORegion(regions.getString("RegionID"), regions.getString("Description")) {};
+
             _dataContext.getDataContainer().addRegion(region);
         }
+        regions.close();
     }
+
+    //ORoute
+    public void setRoutes() throws Exception{
+        ResultSet routes = _dataContext.getSqlConnection().getObject("select * from route");
+        while (routes.next()){
+            ORoute route = new ORoute(routes.getString("Date"), routes.getString("ProductID"),routes.getString("RegionID"),routes.getString("TrailerID"),routes.getInt("sequence"),routes.getString("VisitID"),routes.getDouble("quantity"));
+            _dataContext.getDataContainer().addRoute(route);
+        }
+        routes.close();
+    }
+
 
     //OSource
     public void setSources() throws Exception{
+
         ResultSet sources = _dataContext.getSqlConnection().getObject("select * from master_source");
         while (sources.next()){
             OSource source = new OSource(sources.getString("RegionID"),sources.getDouble("Latitude"),sources.getDouble("Longitude"),sources.getString("SourceID"),sources.getString("Description")) {};
 
             _dataContext.getDataContainer().addSource(source);
         }
+        sources.close();
     }
     public void setSourceAttributeType()throws Exception{
         ResultSet sourceAttrs = _dataContext.getSqlConnection().getObject("select * from sourceattribute");
@@ -210,8 +242,8 @@ public class DBReader {
         ResultSet dailySources = _dataContext.getSqlConnection().getObject("select * from daily_source where Date <= '" + _dataContext.getEndDay() + "' and Date >= '" + _dataContext.getStartDay() +"'");
         while (dailySources.next()){
             Date date = dailySources.getDate("Date");
-            Hashtable<Date,String> data = new Hashtable<>();
-            data.put(dailySources.getDate("Date"),dailySources.getString("ProductID"));
+            HashMap<String,String> data = new HashMap<>();
+            data.put(dailySources.getString("Date"),dailySources.getString("ProductID"));
             _dataContext.getDataContainer().getSource(dailySources.getString("SourceID")).setSourceAvailableQuantity(data,dailySources.getInt("AvailableQuantity"));
 
         }
@@ -226,6 +258,7 @@ public class DBReader {
             trailer.setHomeDepot(_dataContext.getDataContainer().getDepot(trailers.getString("DepotID")));
             _dataContext.getDataContainer().addTrailer(trailer);
         }
+        trailers.close();
     }
     public void setTrailerAttributeType()throws Exception{
         ResultSet trailerAttrs = _dataContext.getSqlConnection().getObject("select * from trailerattribute");
@@ -237,7 +270,7 @@ public class DBReader {
     public void setTrailerAttrData() throws Exception{
         List<OTrailer> trailerList = _dataContext.getDataContainer().getTrailerList();
         for(OTrailer trailer:trailerList){
-            ResultSet trailerAttrData = _dataContext.getSqlConnection().getObject("select * from master_trailerattrdata where TrailerID = '"+ trailer.getTrailerID() +"'");
+            ResultSet trailerAttrData = _dataContext.getSqlConnection().getObject("select * from trailerattrdata where TrailerID = '"+ trailer.getTrailerID() +"'");
             while (trailerAttrData.next()){
                 trailer.addTrailerAttrData(trailerAttrData.getString("TrailerAttrID"),trailerAttrData.getString("data"));
             }

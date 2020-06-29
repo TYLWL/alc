@@ -1,5 +1,6 @@
 package com.OAT.Routing.DataEntity;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 
 public class OCustomer extends OLocation {
@@ -28,9 +29,17 @@ public class OCustomer extends OLocation {
         this.customerAttrData.put(attribute, data);
     }
 
+    public Hashtable toMap(){
+        Hashtable h = new Hashtable();
+        h.put("CustomerID",CustomerID);
+        h.put("customerAttrData",customerAttrData);
+        h.put("Description",Description);
+        return h;
+    }
+
     @Override
     public String toString() {
-        return "OCustomer{" +
+        return "{" +
                 "CustomerID='" + CustomerID + '\'' +
                 ", customerAttrValue=" + customerAttrData +
                 ", Description='" + Description + '\'' +

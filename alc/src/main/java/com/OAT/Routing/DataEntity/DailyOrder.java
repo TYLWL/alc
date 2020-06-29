@@ -1,11 +1,12 @@
 package com.OAT.Routing.DataEntity;
 
 import java.sql.Date;
+import java.util.HashMap;
 
 public class DailyOrder{
     private String OrderID;
     private String ProductID;
-    private Date Date;
+    private String Date;
     private double EstimatedDropSize;
     private String DeliveryType;
     private boolean IsFirstDelivery;
@@ -17,7 +18,7 @@ public class DailyOrder{
     private String Description;
     private OCustomer customer;
 
-    public DailyOrder(String orderID, String productID, java.sql.Date date, double estimatedDropSize, String deliveryType, boolean isFirstDelivery, String specialTimeStart, String specialTimeEnd, Boolean isSoftTime, Boolean isFTFD, Boolean isSoftFTFD, String description, OCustomer customer) {
+    public DailyOrder(String orderID, String productID, String date, double estimatedDropSize, String deliveryType, boolean isFirstDelivery, String specialTimeStart, String specialTimeEnd, Boolean isSoftTime, Boolean isFTFD, Boolean isSoftFTFD, String description, OCustomer customer) {
         OrderID = orderID;
         ProductID = productID;
         Date = date;
@@ -33,9 +34,27 @@ public class DailyOrder{
         this.customer = customer;
     }
 
+    public HashMap toMap(){
+        HashMap hashMap = new HashMap();
+        hashMap.put("OrderID",OrderID);
+        hashMap.put("ProductID",ProductID);
+        hashMap.put("Date",Date);
+        hashMap.put("EstimatedDropSize",EstimatedDropSize);
+        hashMap.put("DeliveryType",DeliveryType);
+        hashMap.put("IsFirstDelivery",IsFirstDelivery);
+        hashMap.put("SpecialTimeStart",SpecialTimeStart);
+        hashMap.put("SpecialTimeEnd",SpecialTimeEnd);
+        hashMap.put("IsSoftTime",IsSoftTime);
+        hashMap.put("IsFTFD",IsFTFD);
+        hashMap.put("IsSoftFTFD",IsSoftFTFD);
+        hashMap.put("Description",Description);
+        hashMap.put("customer",customer);
+        return hashMap;
+
+    }
     @Override
     public String toString() {
-        return "DailyOrder{" +
+        return "{" +
                 "OrderID='" + OrderID + '\'' +
                 ", ProductID='" + ProductID + '\'' +
                 ", Date=" + Date +
@@ -76,11 +95,11 @@ public class DailyOrder{
         ProductID = productID;
     }
 
-    public java.sql.Date getDate() {
+    public String getDate() {
         return Date;
     }
 
-    public void setDate(java.sql.Date date) {
+    public void setDate(String date) {
         Date = date;
     }
 

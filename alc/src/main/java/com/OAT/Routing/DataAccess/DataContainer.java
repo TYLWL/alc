@@ -19,6 +19,7 @@ public class DataContainer {
     private List<ORegion> regions = new ArrayList<>();
     private List<OSource> sources = new ArrayList<>();
     private List<OTrailer> trailers = new ArrayList<>();
+    private List<ORoute> routes = new ArrayList<>();
 
     private OAttributeTypes trailerAttributeType =  new OAttributeTypes();
     private OAttributeTypes sourceAttributeType =  new OAttributeTypes();
@@ -29,6 +30,11 @@ public class DataContainer {
     }
 
     //OProduct
+
+    public List<OProduct> getProducts() {
+        return products;
+    }
+
     public OProduct getProduct(String productID){
         for (OProduct o: products){
             if(o.getProductID().equals(productID)){
@@ -44,6 +50,9 @@ public class DataContainer {
     }
 
     //DailyOrder
+    public List<DailyOrder> getDailyOrderList(){
+        return dailyOrders;
+    }
     public DailyOrder getDailyOrder(String dailyOrderID){
         for (DailyOrder o: dailyOrders){
             if(o.getOrderID().equals(dailyOrderID)){
@@ -84,6 +93,11 @@ public class DataContainer {
     }
 
     //depot
+
+    public List<ODepot> getDepots() {
+        return depots;
+    }
+
     public ODepot getDepot(String depotID){
         for(ODepot o:depots){
             if(depotID.equals(o.getDepotID())){
@@ -178,6 +192,10 @@ public class DataContainer {
     }
 
     //ORegion
+    public List<ORegion> getRegions() {
+        return regions;
+    }
+
     public ORegion getRegion(String regionID){
         for (ORegion o:regions){
             if(regionID.equals(o.getRegionID())){
@@ -192,6 +210,33 @@ public class DataContainer {
         }
     }
 
+    //ORoute
+    public List<ORoute> getRoutes() {
+        return routes;
+    }
+    public ORoute getRoute(String trailerID,String date,String visitID,Integer sequence){
+        for (ORoute o:routes){
+            if(o.getTrailerID().equals(trailerID) && o.getDate().equals(date) && o.getVisitID().equals(visitID)&& o.getSequence() == sequence){
+                return o;
+            }
+        }
+        return null;
+    }
+    public List<ORoute> getRouteLine(String trailerID) {
+        List<ORoute> route = new ArrayList<>();
+        for (ORoute o:routes){
+            if(o.getTrailerID().equals(trailerID)){
+                route.add(o);
+            }
+        }
+        return route;
+    }
+
+    public void addRoute(ORoute route) {
+        if(getRoute(route.getTrailerID(),route.getDate(),route.getVisitID(),route.getSequence()) == null){
+            routes.add(route);
+        }
+    }
     //OSource
     public List<OSource> getSourceList(){
         return sources;

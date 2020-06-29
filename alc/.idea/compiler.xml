@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="alc" />
+        <module name="ALC_java" />
+        <module name="test_java" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="alc" target="1.8" />
+      <module name="ALC_java" target="1.8" />
+      <module name="test_java" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

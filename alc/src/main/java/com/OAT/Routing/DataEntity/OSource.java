@@ -9,7 +9,7 @@ public class OSource extends OLocation {
     private String Description;
 
     private Hashtable<String,String> sourceAttrData = new Hashtable<>();
-    private Hashtable<HashMap<Date,String>,Integer > SourceAvailQuantity = new Hashtable<>();
+    private Hashtable<HashMap<String,String>,Integer > SourceAvailQuantity = new Hashtable<>();
 
     public OSource(String regionID, double latitude, double longitude, String sourceID) {
         super(regionID, latitude, longitude);
@@ -21,7 +21,24 @@ public class OSource extends OLocation {
         SourceID = sourceID;
         Description = description;
     }
-
+    public Hashtable toMap(String date,String product) {
+        Hashtable hashMap = new Hashtable();
+        System.out.println(date+product);
+        System.out.println(getQuantity(date, product));
+        hashMap.put("SourceID",SourceID);
+        hashMap.put("Date",date);
+        hashMap.put("ProductID",product);
+        if( getQuantity(date, product) != null){
+            hashMap.put("AvailableQuantity",getQuantity(date, product));
+        }
+        hashMap.put("Latitude",this.getLatitude());
+        hashMap.put("Longitude",this.getLongitude());
+        hashMap.put("RegionID",this.getRegionID());
+        if(Description !=null) {
+            hashMap.put("Description", Description);
+        }
+        return hashMap;
+    }
 
     @Override
     public String toString() {
@@ -33,21 +50,34 @@ public class OSource extends OLocation {
                 '}';
     }
 
-    public void setSourceAvailableQuantity(HashMap<Date,String> map,Integer data)
+    public void setSourceAvailableQuantity(HashMap<String,String> map,Integer data)
     {
         SourceAvailQuantity.put(map, data);
     }
 
-    public Hashtable<HashMap<Date,String>,Integer > getSourceAvailableQuantity() {
+    public Hashtable<HashMap<String,String>,Integer > getSourceAvailableQuantity() {
         if(SourceAvailQuantity == null){
             return null;
         }
         return SourceAvailQuantity;
     }
-    public Integer getQuantity(Date date,String productID){
-        HashMap<Date,String> t = new HashMap<>();
+    public Integer getQuantity(String date,String productID){
+        HashMap<String,String> t = new HashMap<>();
         t.put(date, productID);
-        return SourceAvailQuantity.get(t);
+        Integer quantity = SourceAvailQuantity.get(t);
+        String s;
+        try {
+            s = quantity.toString();
+
+        } catch (Exception e){
+            System.out.println("坏了");
+            return null;
+        }
+        if (s.equals("")) {
+            System.out.println("11开始");
+            return SourceAvailQuantity.get(t);
+        }
+        return null;
     }
 
     public void addSourceAttrData(String productId, String attributeId, String data){

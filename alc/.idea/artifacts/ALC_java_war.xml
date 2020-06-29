@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="ALC_java:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="ALC-1.war">
+      <element id="artifact" artifact-name="ALC_java:war exploded" />
+    </root>
+  </artifact>
+</component>

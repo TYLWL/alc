@@ -1,5 +1,8 @@
 package com.OAT.Routing.DataEntity;
 
+import com.OAT.Routing.DataAccess.DataContainer;
+import com.sun.org.apache.regexp.internal.RE;
+
 import java.util.HashSet;
 import java.util.Hashtable;
 
@@ -11,6 +14,16 @@ public class OProduct {
 
     public OProduct(){
     }
+
+    public Hashtable toMap(){
+        Hashtable h = new Hashtable();
+        h.put("ProductID",ProductID);
+        if(this.Description != null) {
+            h.put("Description", Description);
+        }
+        return h;
+    }
+
     public OProduct(String productID) {
         ProductID = productID;
     }

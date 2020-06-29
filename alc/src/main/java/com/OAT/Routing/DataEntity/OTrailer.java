@@ -25,7 +25,6 @@ public class OTrailer {
 
     }
 
-
     @Override
     public String toString() {
         return "OTrailer{" +
@@ -51,6 +50,9 @@ public class OTrailer {
         return dailyAttributeData;
     }
 
+    public String getDailyAttributeData(Date date,String attribute){
+        return dailyAttributeData.get(date).get(attribute);
+    }
     public void setDailyAttributeData(Date date, Hashtable<String, String> dailyData) {
         this.dailyAttributeData.put(date, dailyData);
     }
