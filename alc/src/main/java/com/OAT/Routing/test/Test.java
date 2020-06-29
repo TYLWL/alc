@@ -16,13 +16,10 @@ public class Test {
 
 
     public static void main(String[] args) throws Exception{
-        ArrayList a = new ArrayList();
-        Hashtable b = new Hashtable();
-        b.put("hello",45);
-        b.put("hellll",55);
-        a.add(b);
-        a.add("hello");
-        a.add("kkkkk");
-        System.out.println(a);
+       SqlConnection sqlConnection = new SqlConnection();
+        ResultSet rs = sqlConnection.getObject("select * from product");
+        while (rs.next()){
+            System.out.println(rs.getString("ProductID"));
+        }
     }
 }
