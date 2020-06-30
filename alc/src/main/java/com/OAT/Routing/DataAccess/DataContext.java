@@ -30,7 +30,7 @@ public class DataContext {
             _endDay = end;
             dataContainer =  new DataContainer();
             sqlConnection = new SqlConnection();
-            createDataContainer();
+            createDailyDataContainer();
 
         }catch (Exception e)
         {

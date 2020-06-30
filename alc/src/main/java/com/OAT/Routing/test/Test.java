@@ -18,7 +18,7 @@ public class Test {
 
 
     public static void main(String[] args) throws Exception{
-       SqlConnection sqlConnection = new SqlConnection();
+    	SqlConnection sqlConnection = new SqlConnection();
         ResultSet rs = sqlConnection.getObject("select * from product");
         while (rs.next()){
             System.out.println(rs.getString("ProductID"));
