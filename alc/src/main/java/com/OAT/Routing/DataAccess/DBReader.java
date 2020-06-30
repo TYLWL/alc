@@ -15,8 +15,7 @@ public class DBReader {
     public DBReader() {
     }
 
-    public DBReader(DataContext dataContext)
-    {
+    public DBReader(DataContext dataContext) {
     	_dataContext =dataContext;
     }
     public void readData()throws Exception{
@@ -33,22 +32,23 @@ public class DBReader {
         setEmissionStandards();
         setEmissionCompatibility();
         setDrivers();
-        setSources();
 
-        setTrailers();
     }
     public void readDailyData()throws Exception{
 
         setCustomers();
         setCustomerAttributeType();
         setCustomerAttrData();
+        setSources();
         setDailySource();
         setSourceAttributeType();
         setSourceAttrData();
+        setTrailers();
         setTrailerAttributeType();
         setTrailerAttrData();
         setDailyTrailer();
         setDailyOrders();
+        setRoutes();
     }
 
     //简单示例
