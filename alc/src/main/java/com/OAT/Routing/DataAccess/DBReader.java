@@ -48,6 +48,7 @@ public class DBReader {
         setTrailerAttrData();
         setDailyTrailer();
         setDailyOrders();
+        setRoutes();
     }
 
     //简单示例
